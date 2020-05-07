@@ -8,7 +8,7 @@ namespace NetCoreProj
 {
     public class MyStartup
     {
-        IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         public MyStartup(IConfiguration configuration)
         {
