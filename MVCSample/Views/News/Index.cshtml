@@ -1,0 +1,28 @@
+﻿
+@{
+    var list = (List<News>)ViewData["NewsList"];
+}
+
+@section NewsTable {
+    <div>
+        <table class="table-striped">
+            <tr>
+                <td align="center"><h5>Id</h5></td>
+                <td align="center"><h5>Title</h5></td>
+                <td align="center"><h5>Text</h5></td>
+                <td ><h5>AuthorName</h5></td>
+                <td ><h5>IsFake</h5></td>
+            </tr>
+            @foreach (News obj in list)
+            {
+                <tr>
+                    <td align="center">@obj.Id</td>
+                    <td>@obj.Title</td>
+                    <td>@obj.Text</td>
+                    <td>@obj.AuthorName</td>
+                    <td align="center">@obj.IsFake</td>
+                </tr>
+            }
+        </table>
+    </div>
+}
