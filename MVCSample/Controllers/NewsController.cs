@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MVCSample.Models;
+using MVCSample.Models.News;
 using System.Linq;
 
 namespace MVCSample.Controllers

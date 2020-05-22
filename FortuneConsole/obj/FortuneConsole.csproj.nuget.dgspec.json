@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\SinAdmin\\source\\repos\\NetCoreProj\\MVCSample\\MVCSample.csproj": {}
+    "C:\\Users\\SinAdmin\\source\\repos\\NetCoreProj\\FortuneConsole\\FortuneConsole.csproj": {}
   },
   "projects": {
-    "C:\\Users\\SinAdmin\\source\\repos\\NetCoreProj\\MVCSample\\MVCSample.csproj": {
+    "C:\\Users\\SinAdmin\\source\\repos\\NetCoreProj\\FortuneConsole\\FortuneConsole.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\SinAdmin\\source\\repos\\NetCoreProj\\MVCSample\\MVCSample.csproj",
-        "projectName": "MVCSample",
-        "projectPath": "C:\\Users\\SinAdmin\\source\\repos\\NetCoreProj\\MVCSample\\MVCSample.csproj",
+        "projectUniqueName": "C:\\Users\\SinAdmin\\source\\repos\\NetCoreProj\\FortuneConsole\\FortuneConsole.csproj",
+        "projectName": "FortuneConsole",
+        "projectPath": "C:\\Users\\SinAdmin\\source\\repos\\NetCoreProj\\FortuneConsole\\FortuneConsole.csproj",
         "packagesPath": "C:\\Users\\SinAdmin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\SinAdmin\\source\\repos\\NetCoreProj\\MVCSample\\obj\\",
+        "outputPath": "C:\\Users\\SinAdmin\\source\\repos\\NetCoreProj\\FortuneConsole\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -41,23 +41,9 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
-            "Microsoft.EntityFrameworkCore": {
+            "Unity": {
               "target": "Package",
-              "version": "[3.1.4, )"
-            },
-            "Microsoft.EntityFrameworkCore.SqlServer": {
-              "target": "Package",
-              "version": "[3.1.4, )"
-            },
-            "Microsoft.EntityFrameworkCore.Tools": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[3.1.4, )"
-            },
-            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
-              "target": "Package",
-              "version": "[3.1.2, )"
+              "version": "[5.11.6, )"
             }
           },
           "imports": [
@@ -77,9 +63,6 @@
             }
           ],
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }

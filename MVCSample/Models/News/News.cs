@@ -1,4 +1,4 @@
-﻿namespace MVCSample.Models
+﻿namespace MVCSample.Models.News
 {
     public class News
     {
