@@ -1,16 +1,38 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using MVCSample.Models.Infestation;
+using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MVCSample.Controllers
 {
-    public class HumanController
+    public class HumanController : Controller
     {
-        public IActionResult Index()
+        InfestationContext db;
+
+        public HumanController(InfestationContext _context)
         {
-            return new BadRequestResult();
+            db = _context;
+        }
+
+        public IActionResult Index(int id)
+        {
+            ViewData["Human"] = id!=0 ?  db.Humans.Where(x => x.Id == id).ToList() : db.Humans.ToList();
+            return View();
+        }
+
+        public IActionResult Country(int id)
+        {
+            //ViewData["COuntryName"] = db.Humans.Include(x => x.Country).Where(x => x.Id == id).SingleOrDefault().Country.Name;
+            ViewData["COuntryName"] = db.Humans.Where(x => x.Id == id).SingleOrDefault().Country.Name;
+            return View();
+        }
+
+        public IActionResult Brazil()
+        {
+            //ViewData["Brazil"] = db.Humans.Include(x=>x.Country).Where(x=>x.Country.Name == "Brazil").ToList();
+            ViewData["Brazil"] = db.Humans.Where(x => x.Country.Name == "Brazil").ToList();
+            return View();
         }
     }
 }

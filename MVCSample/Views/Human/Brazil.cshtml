@@ -1,0 +1,27 @@
+﻿
+@{
+    List<Human> human = (List<Human>)ViewData["Brazil"];
+}
+
+<table class="table-striped">
+    @foreach (Human human1 in human)
+    {
+    <tr>
+        <td>
+            <h5>@human1.FirstName</h5>
+        </td>
+        <td>
+            <h5>@human1.LastName</h5>
+        </td>
+        <td>
+            <h5>@human1.Gender</h5>
+        </td>
+        <td>
+            <h5>@human1.Age</h5>
+        </td>
+        <td>
+            <h5>@human1.IsSick</h5>
+        </td>
+    </tr>
+    }
+</table>

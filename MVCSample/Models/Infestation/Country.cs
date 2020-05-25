@@ -15,6 +15,6 @@ namespace MVCSample.Models.Infestation
         public int RecoveredCount { get; set; }
         public bool Vaccine { get; set; }
 
-        public List<Human> Humans { get; set; }
+        public virtual List<Human> Humans { get; set; }
     }
 }
