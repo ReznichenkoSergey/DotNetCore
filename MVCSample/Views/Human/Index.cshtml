@@ -1,26 +1,28 @@
 ﻿
 @{
-    List<Human> human = (List<Human>)ViewData["Human"];
+    List<Human> humans = (List<Human>)ViewData["Humans"];
+    string humanInfo = ViewData["HumanInfo"].ToString();
 }
 
+<h3>@humanInfo</h3>
 <table class="table-striped">
-    @foreach (Human human1 in human)
+    @foreach (Human human in humans)
     {
     <tr>
-        <td>
-            <h5>@human1.FirstName</h5>
+        <td class="col-auto">
+            <h5>@human.FirstName</h5>
         </td>
-        <td>
-            <h5>@human1.LastName</h5>
+        <td class="col-auto">
+            <h5>@human.LastName</h5>
         </td>
-        <td>
-            <h5>@human1.Gender</h5>
+        <td class="col-auto">
+            <h5>@human.Gender</h5>
         </td>
-        <td>
-            <h5>@human1.Age</h5>
+        <td class="col-auto">
+            <h5>@human.Age</h5>
         </td>
-        <td>
-            <h5>@human1.IsSick</h5>
+        <td class="col-auto">
+            <h5>@human.IsSick</h5>
         </td>
     </tr>
     }

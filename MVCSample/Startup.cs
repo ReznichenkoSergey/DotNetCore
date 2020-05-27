@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MVCSample.Models.Infestation;
+using MVCSample.Models.Interfaces;
+using MVCSample.Models.Repositories;
 
 namespace MVCSample
 {
@@ -25,9 +27,10 @@ namespace MVCSample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<InfestationContext>(builder => builder
-                .UseSqlServer(Configuration.GetConnectionString("InfestationDbConnection"))
-                .UseLazyLoadingProxies()
-                );
+                .UseSqlServer(Configuration.GetConnectionString("InfestationDbConnection")));
+
+            services.AddTransient<IHumanRepository, SqlHumanRepository>();
+            
             services.AddControllersWithViews();
         }
 
