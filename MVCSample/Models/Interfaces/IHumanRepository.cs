@@ -12,6 +12,6 @@ namespace MVCSample.Models.Interfaces
         Human GetHuman(int id);
         void CreateHuman(Human obj);
         void ModifyHuman(Human obj);
-        void KillHuman(Human obj);
+        void DeleteHuman(int id);
     }
 }

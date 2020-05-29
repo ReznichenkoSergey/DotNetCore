@@ -30,20 +30,17 @@ namespace MVCSample.Models.Repositories
 
         public Human GetHuman(int id) => human.Where(x=>x.Id == id).FirstOrDefault();
 
-        public void KillHuman(Human obj)
+        public void DeleteHuman(int id)
         {
-            human.Remove(obj);
+            human.Remove(human.Find(id));
             db.SaveChanges();
         }
 
         public void ModifyHuman(Human obj)
         {
-            var item = human.FirstOrDefault(x => x.Id == obj.Id);
-            if (item != null)
-            {
-                human.Update(obj);
-                db.SaveChanges();
-            }
+            db.Entry(obj).State = EntityState.Modified;
+            db.SaveChanges();
         }
+
     }
 }
