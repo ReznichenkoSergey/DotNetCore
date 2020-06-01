@@ -1,4 +1,4 @@
-﻿namespace MVCSample.Models.News
+﻿namespace MVCSample.Models.Infestation
 {
     public class News
     {

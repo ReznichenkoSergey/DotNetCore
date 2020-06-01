@@ -11,28 +11,26 @@ namespace MVCSample.Models.Repositories
 {
     public class SqlHumanRepository : IHumanRepository
     {
-        DbContext db;
-        DbSet<Human> human;
+        InfestationContext db;
 
         public SqlHumanRepository(InfestationContext context)
         {
             db = context;
-            human = db.Set<Human>();
         }
 
         public void CreateHuman(Human obj)
         {
-            human.Add(obj);
+            db.Humans.Add(obj);
             db.SaveChanges();
         }
 
-        public IQueryable<Human> GetAllHumans() => human.AsQueryable();
+        public IQueryable<Human> GetAllHumans() => db.Humans.AsQueryable();
 
-        public Human GetHuman(int id) => human.Where(x=>x.Id == id).FirstOrDefault();
+        public Human GetHuman(int id) => db.Humans.Where(x=>x.Id == id).FirstOrDefault();
 
         public void DeleteHuman(int id)
         {
-            human.Remove(human.Find(id));
+            db.Humans.Remove(db.Humans.Find(id));
             db.SaveChanges();
         }
 

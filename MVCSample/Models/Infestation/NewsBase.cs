@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MVCSample.Models.News
+namespace MVCSample.Models.Infestation
 {
     public static class NewsBase
     {

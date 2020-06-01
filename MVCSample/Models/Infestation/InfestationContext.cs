@@ -11,6 +11,8 @@ namespace MVCSample.Models.Infestation
         public DbSet<Human> Humans { get; set; }
         public DbSet<Country> Countries { get; set; }
 
+        public DbSet<News> News { get; set; }
+
         public InfestationContext(DbContextOptions options):base(options)
         { }
 
