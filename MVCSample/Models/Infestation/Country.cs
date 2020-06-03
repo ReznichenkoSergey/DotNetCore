@@ -16,5 +16,8 @@ namespace MVCSample.Models.Infestation
         public bool Vaccine { get; set; }
 
         public virtual List<Human> Humans { get; set; }
+
+        public int? WorldPartId { get; set; }
+        public virtual WorldPart  WorldPart { get; set; }
     }
 }

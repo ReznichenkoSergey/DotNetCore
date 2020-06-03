@@ -10,7 +10,7 @@ namespace MVCSample.Models.Infestation
     {
         public int Id { get; set; }
         [Column(TypeName = "nvarchar(50)")]
-        public string FirstName { get; set; }        
+        public string FirstName { get; set; }
         public string LastName { get; set; }
         public int Age { get; set; }
         public bool IsSick { get; set; }

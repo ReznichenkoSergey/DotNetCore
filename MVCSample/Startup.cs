@@ -28,7 +28,8 @@ namespace MVCSample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<InfestationContext>(builder => builder
-                .UseSqlServer(Configuration.GetConnectionString("InfestationDbConnection")));
+                .UseSqlServer(Configuration.GetConnectionString("InfestationDbConnection"))
+                .UseLazyLoadingProxies());
 
             services.AddTransient<IHumanRepository, SqlHumanRepository>();
 

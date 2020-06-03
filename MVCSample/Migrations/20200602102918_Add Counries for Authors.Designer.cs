@@ -4,14 +4,16 @@ using MVCSample.Models.Infestation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MVCSample.Migrations
 {
     [DbContext(typeof(InfestationContext))]
-    partial class InfestationContextModelSnapshot : ModelSnapshot
+    [Migration("20200602102918_Add Counries for Authors")]
+    partial class AddCounriesforAuthors
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,12 +46,7 @@ namespace MVCSample.Migrations
                     b.Property<bool>("Vaccine")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("WorldPartId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("WorldPartId");
 
                     b.ToTable("Countries");
                 });
@@ -79,9 +76,14 @@ namespace MVCSample.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("NewsId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CountryId");
+
+                    b.HasIndex("NewsId");
 
                     b.ToTable("Humans");
                 });
@@ -107,63 +109,7 @@ namespace MVCSample.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
-
                     b.ToTable("News");
-                });
-
-            modelBuilder.Entity("MVCSample.Models.Infestation.WorldPart", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("WorldParts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Africa"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Eurasia"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "North America"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "South America"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Antarctica"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Australia"
-                        });
-                });
-
-            modelBuilder.Entity("MVCSample.Models.Infestation.Country", b =>
-                {
-                    b.HasOne("MVCSample.Models.Infestation.WorldPart", "WorldPart")
-                        .WithMany("Countries")
-                        .HasForeignKey("WorldPartId");
                 });
 
             modelBuilder.Entity("MVCSample.Models.Infestation.Human", b =>
@@ -173,15 +119,10 @@ namespace MVCSample.Migrations
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("MVCSample.Models.Infestation.News", b =>
-                {
-                    b.HasOne("MVCSample.Models.Infestation.Human", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("MVCSample.Models.Infestation.News", null)
+                        .WithMany("Authors")
+                        .HasForeignKey("NewsId");
                 });
 #pragma warning restore 612, 618
         }

@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200602120318_Add WorldPars.cs" />
+    <Compile Remove="Migrations\20200602120318_Add WorldPars.Designer.cs" />
+    <Compile Remove="Migrations\20200602120401_Add WorldParts.cs" />
+    <Compile Remove="Migrations\20200602120401_Add WorldParts.Designer.cs" />
+    <Compile Remove="Migrations\20200602121623_Update WorldPartId in Countries.cs" />
+    <Compile Remove="Migrations\20200602121623_Update WorldPartId in Countries.Designer.cs" />
+    <Compile Remove="Migrations\20200602150622_E.cs" />
+    <Compile Remove="Migrations\20200602150622_E.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.4" />

@@ -4,14 +4,16 @@ using MVCSample.Models.Infestation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MVCSample.Migrations
 {
     [DbContext(typeof(InfestationContext))]
-    partial class InfestationContextModelSnapshot : ModelSnapshot
+    [Migration("20200602120448_Add WorldParts")]
+    partial class AddWorldParts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,38 +127,6 @@ namespace MVCSample.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("WorldParts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Africa"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Eurasia"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "North America"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "South America"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Antarctica"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Australia"
-                        });
                 });
 
             modelBuilder.Entity("MVCSample.Models.Infestation.Country", b =>
