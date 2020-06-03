@@ -13,6 +13,8 @@ namespace MVCSample.Controllers
             Repository = repository;
         }
 
+        [Route("Index")]
+        [Route("[action]")]
         public IActionResult Index()
         {
             /*if (NewsBase.News.Any())
@@ -21,6 +23,17 @@ namespace MVCSample.Controllers
                 return new NotFoundResult();*/
             ViewData["NewsList"] = Repository.GetAllNew().ToList();
             return View();
+        }
+
+        [Route("[controller]/[action]/{id?}")]
+        public IActionResult Index(int id)
+        {
+            /*if (NewsBase.News.Any())
+                ViewData["NewsList"] = NewsBase.News;
+            else
+                return new NotFoundResult();*/
+            ViewData["NewsList"] = Repository.GetAllNew().Take(2).ToList();
+            return View("Index");
         }
     }
 }
