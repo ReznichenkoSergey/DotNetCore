@@ -51,6 +51,9 @@ namespace RestApiExample.Models
                         temp.Text = news.Text;
                     if(news.AuthorName!=null)
                         temp.AuthorName = news.AuthorName;
+                    if(news.IsFake.HasValue)
+                        temp.IsFake = news.IsFake;
+
                 }
             }
         }
