@@ -20,7 +20,13 @@ namespace RestApiExample.Controllers
         }
 
         [HttpGet]
-        public List<News> GetAllNew() => db.GetAllNew();
+        public List<News> GetNew([FromHeader] bool? isFake)
+        {
+            if(isFake.HasValue)
+                return db.GetAllNew().Where(x => x.IsFake == isFake.Value).ToList();
+            else
+                return db.GetAllNew().ToList();
+        }
 
         [HttpDelete("{id}")]
         public void DeleteNews(int id)
@@ -41,9 +47,8 @@ namespace RestApiExample.Controllers
         }
 
         [HttpPost]
-        public void CreateNews([FromHeader] bool isFake, [FromBody] News news)
+        public void CreateNews([FromBody] News news)
         {
-            news.IsFake = isFake;
             db.CreateNews(news);
         }
     }

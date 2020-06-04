@@ -45,13 +45,13 @@ namespace RestApiExample.Models
                 var temp = News.FirstOrDefault(x => x.Id == id);
                 if (news != null)
                 {
-                    if(news.Title!=null)
+                    if (news.Title != null)
                         temp.Title = news.Title;
-                    if(news.Text!=null)
+                    if (news.Text != null)
                         temp.Text = news.Text;
-                    if(news.AuthorName!=null)
+                    if (news.AuthorName != null)
                         temp.AuthorName = news.AuthorName;
-                    if(news.IsFake.HasValue)
+                    if (news.IsFake.HasValue)
                         temp.IsFake = news.IsFake;
 
                 }
