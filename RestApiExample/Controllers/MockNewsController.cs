@@ -44,7 +44,7 @@ namespace RestApiExample.Controllers
             if (news.Id == id)
             {
                 var temp = db.GetAllNew().FirstOrDefault(x => x.Id == id);
-                if (news != null)
+                if (temp != null)
                 {
                     temp.Title = news.Title;
                     temp.Text = news.Text;
@@ -60,7 +60,7 @@ namespace RestApiExample.Controllers
             if (news.Id == id)
             {
                 var temp = db.GetAllNew().FirstOrDefault(x => x.Id == id);
-                if (news != null)
+                if (temp != null)
                 {
                     if (news.Title != null) temp.Title = news.Title;
                     if (news.Text != null) temp.Text = news.Text;
