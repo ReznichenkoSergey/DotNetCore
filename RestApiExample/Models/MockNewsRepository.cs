@@ -22,40 +22,13 @@ namespace RestApiExample.Models
 
         public void CreateNews(News news)
         {
-            if(News.Any(x=>x.Id == news.Id))
-            {
-                news.Id = News.Max(x => x.Id) + 1;
-            }
             News.Add(news);
         }
 
         public void DeleteNews(int id)
         {
-            var news = News.FirstOrDefault(x => x.Id == id);
-            if (news != null)
-            {
-                News.Remove(news);
-            }
+            News.Remove(GetNews(id));
         }
 
-        public void UpdateNews(int id, News news)
-        {
-            if (news.Id == id)
-            {
-                var temp = News.FirstOrDefault(x => x.Id == id);
-                if (news != null)
-                {
-                    if (news.Title != null)
-                        temp.Title = news.Title;
-                    if (news.Text != null)
-                        temp.Text = news.Text;
-                    if (news.AuthorName != null)
-                        temp.AuthorName = news.AuthorName;
-                    if (news.IsFake.HasValue)
-                        temp.IsFake = news.IsFake;
-
-                }
-            }
-        }
     }
 }
