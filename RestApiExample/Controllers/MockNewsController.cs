@@ -41,42 +41,18 @@ namespace RestApiExample.Controllers
         [HttpPut("{id}")]
         public void UpdateNews(int id, [FromBody] News news)
         {
-            if (news.Id == id)
-            {
-                var temp = db.GetAllNew().FirstOrDefault(x => x.Id == id);
-                if (temp != null)
-                {
-                    temp.Title = news.Title;
-                    temp.Text = news.Text;
-                    temp.AuthorName = news.AuthorName;
-                    temp.IsFake = news.IsFake;
-                }
-            }
+            db.UpdateNews(id, news);
         }
 
         [HttpPatch("{id}")]
         public void UpdateNewsPartial(int id, [FromBody] News news)
         {
-            if (news.Id == id)
-            {
-                var temp = db.GetAllNew().FirstOrDefault(x => x.Id == id);
-                if (temp != null)
-                {
-                    if (news.Title != null) temp.Title = news.Title;
-                    if (news.Text != null) temp.Text = news.Text;
-                    if (news.AuthorName != null) temp.AuthorName = news.AuthorName;
-                    if (news.IsFake.HasValue) temp.IsFake = news.IsFake;
-                }
-            }
+            db.UpdateNewsPartial(id, news);
         }
 
         [HttpPost]
         public void CreateNews([FromBody] News news)
         {
-            if (db.GetAllNew().Any(x => x.Id == news.Id))
-            {
-                news.Id = db.GetAllNew().Max(x => x.Id) + 1;
-            }
             db.CreateNews(news);
         }
     }

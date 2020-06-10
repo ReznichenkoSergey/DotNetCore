@@ -8,5 +8,8 @@ namespace RestApiExample.Models
         List<News> GetAllNew();
         void CreateNews(News news);
         void DeleteNews(int id);
+        void UpdateNews(int id, News news);
+
+        void UpdateNewsPartial(int id, News news);
     }
 }

@@ -22,6 +22,10 @@ namespace RestApiExample.Models
 
         public void CreateNews(News news)
         {
+            if (News.Any(x => x.Id == news.Id))
+            {
+                news.Id = News.Max(x => x.Id) + 1;
+            }
             News.Add(news);
         }
 
@@ -30,5 +34,38 @@ namespace RestApiExample.Models
             News.Remove(GetNews(id));
         }
 
+        public void UpdateNews(int id, News news)
+        {
+            if (news.Id == id)
+            {
+                var temp = News.FirstOrDefault(x => x.Id == id);
+                if (temp != null)
+                {
+                    temp.Title = news.Title;
+                    temp.Text = news.Text;
+                    temp.AuthorName = news.AuthorName;
+                    temp.IsFake = news.IsFake;
+                }
+                else
+                {
+                    CreateNews(news);
+                }
+            }
+        }
+
+        public void UpdateNewsPartial(int id, News news)
+        {
+            if (news.Id == id)
+            {
+                var temp = News.FirstOrDefault(x => x.Id == id);
+                if (temp != null)
+                {
+                    if (news.Title != null) temp.Title = news.Title;
+                    if (news.Text != null) temp.Text = news.Text;
+                    if (news.AuthorName != null) temp.AuthorName = news.AuthorName;
+                    if (news.IsFake.HasValue) temp.IsFake = news.IsFake;
+                }
+            }
+        }
     }
 }
