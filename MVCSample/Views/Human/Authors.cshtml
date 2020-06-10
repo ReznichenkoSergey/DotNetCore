@@ -1,0 +1,23 @@
+﻿@model List<HumanAuthorsViewModel>
+
+<table>
+    <tr>
+        <td>FirstName</td>
+        <td>LastName</td>
+        <td>NewsCounter</td>
+    </tr>
+    @foreach (HumanAuthorsViewModel human in Model)
+    {
+<tr>
+    <td class="col-auto">
+        <h5>@human.FirstName</h5>
+    </td>
+    <td class="col-auto">
+        <h5>@human.LastName</h5>
+    </td>
+    <td class="col-auto">
+        <h5>@human.NewsCounter</h5>
+    </td>
+</tr>
+    }
+</table>

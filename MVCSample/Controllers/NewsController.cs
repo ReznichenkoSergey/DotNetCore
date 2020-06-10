@@ -7,22 +7,23 @@ namespace MVCSample.Controllers
 {
     public class NewsController : Controller
     {
-        INewsRepository Repository;
+        readonly INewsRepository Repository;
         public NewsController(INewsRepository repository)
         {
             Repository = repository;
         }
 
-        [Route("Index")]
-        [Route("[action]")]
-        public IActionResult Index()
+        //[Route("Index")]
+        //[Route("[action]")]
+        public IActionResult Show()
         {
             /*if (NewsBase.News.Any())
                 ViewData["NewsList"] = NewsBase.News;
             else
                 return new NotFoundResult();*/
-            ViewData["NewsList"] = Repository.GetAllNew().ToList();
-            return View();
+            //ViewData["NewsList"] = Repository.GetAllNew().ToList();
+            var obj = Repository.GetAllNew().ToList();
+            return View("Show", obj);
         }
 
         [Route("[controller]/[action]/{id?}")]
@@ -32,8 +33,10 @@ namespace MVCSample.Controllers
                 ViewData["NewsList"] = NewsBase.News;
             else
                 return new NotFoundResult();*/
-            ViewData["NewsList"] = Repository.GetAllNew().Take(2).ToList();
-            return View("Index");
+            if(id!= 0)
+                ViewData["NewsList"] = Repository.GetAllNew().Where(x=>x.Id == id).ToList();
+            ViewData["NewsList"] = Repository.GetAllNew().ToList();
+            return View();
         }
     }
 }
