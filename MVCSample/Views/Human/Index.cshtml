@@ -1,30 +1,35 @@
 ﻿
+@model List<Human>;
+
 @{
     //List<Human> humans = (List<Human>)ViewData["Humans"];
-    List<Human> humans = (List<Human>)ViewBag.Humans;
+    //List<Human> humans = (List<Human>)ViewBag.Humans;
     string humanInfo = ViewData["HumanInfo"].ToString();
 }
+<a asp-controller="Human" asp-action="Create">Create Human</a>
+<br />
+<br />
 
 <h3>@humanInfo</h3>
 <table class="table-striped">
-    @foreach (Human human in humans)
+    @foreach (Human human in Model)
     {
-    <tr>
-        <td class="col-auto">
-            <h5>@human.FirstName</h5>
-        </td>
-        <td class="col-auto">
-            <h5>@human.LastName</h5>
-        </td>
-        <td class="col-auto">
-            <h5>@human.Gender</h5>
-        </td>
-        <td class="col-auto">
-            <h5>@human.Age</h5>
-        </td>
-        <td class="col-auto">
-            <h5>@human.IsSick</h5>
-        </td>
-    </tr>
+        <tr>
+            <td class="col-auto">
+                <h5>@human.FirstName</h5>
+            </td>
+            <td class="col-auto">
+                <h5>@human.LastName</h5>
+            </td>
+            <td class="col-auto">
+                <h5>@human.Gender</h5>
+            </td>
+            <td class="col-auto">
+                <h5>@human.Age</h5>
+            </td>
+            <td class="col-auto">
+                <h5>@human.IsSick</h5>
+            </td>
+        </tr>
     }
 </table>

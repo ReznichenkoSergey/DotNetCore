@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVCSample.Models.Infestation;
 using MVCSample.Models.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MVCSample.Controllers
@@ -13,29 +14,37 @@ namespace MVCSample.Controllers
             Repository = repository;
         }
 
-        //[Route("Index")]
-        //[Route("[action]")]
-        public IActionResult Show()
+        public IActionResult Index(int? newsid)
         {
-            /*if (NewsBase.News.Any())
-                ViewData["NewsList"] = NewsBase.News;
+            List<News> list = null;
+            if (newsid.HasValue)
+                list = Repository
+                    .GetAllNew()
+                    .Where(x => x.Id == newsid)
+                    .ToList();
             else
-                return new NotFoundResult();*/
-            //ViewData["NewsList"] = Repository.GetAllNew().ToList();
-            var obj = Repository.GetAllNew().ToList();
-            return View("Show", obj);
+                list = Repository.GetAllNew().ToList();
+            return View(list);
         }
 
-        [Route("[controller]/[action]/{id?}")]
-        public IActionResult Index(int id)
+        public IActionResult NewsByAuthor(int authorid)
         {
-            /*if (NewsBase.News.Any())
-                ViewData["NewsList"] = NewsBase.News;
-            else
-                return new NotFoundResult();*/
-            if(id!= 0)
-                ViewData["NewsList"] = Repository.GetAllNew().Where(x=>x.Id == id).ToList();
-            ViewData["NewsList"] = Repository.GetAllNew().ToList();
+            var list = Repository
+                .GetAllNew()
+                .Where(x => x.AuthorId == authorid)
+                .ToList();
+            return View("Index", list);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(News news)
+        {
+            Repository.CreateNews(news);
             return View();
         }
     }

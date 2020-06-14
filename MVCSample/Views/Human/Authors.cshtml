@@ -16,7 +16,9 @@
         <h5>@human.LastName</h5>
     </td>
     <td class="col-auto">
-        <h5>@human.NewsCounter</h5>
+        <h5>
+            <a asp-controller="News" asp-action="NewsByAuthor" asp-route-authorid="@human.Id">@human.NewsCounter</a>
+        </h5>
     </td>
 </tr>
     }

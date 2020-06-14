@@ -20,18 +20,16 @@ namespace MVCSample.Controllers
             Repository = repository;
         }
 
-        public IActionResult Index([FromQuery] int humanId)
+        public IActionResult Index(int humanId)
         {
-            //ViewData["Humans"] = humanId != 0 ?  db.Humans.Where(x => x.Id == humanId).ToList() : db.Humans.ToList();
-            //ViewData["Humans"] = humanId != 0 ? new List<Human>() { Repository.GetHuman(humanId) } : Repository.GetAllHumans().ToList();
+            List<Human> human = null;
             if (humanId != 0)
             {
                 var obj = Repository.GetHuman(humanId);
                 if (obj != null)
                 {
-                    ViewData["HumanInfo"] = $"Single Human by the humanid={humanId}";
-                    //ViewData["Humans"] = obj != null ? new List<Human>() { obj } : new List<Human>();
-                    ViewBag.Humans = obj != null ? new List<Human>() { obj } : new List<Human>();
+                    ViewData["HumanInfo"] = $"Single Human by the humanid= {humanId}";
+                    human = obj != null ? new List<Human>() { obj } : new List<Human>();
                 }
                 else
                     return new NotFoundObjectResult($"Human was not found!");
@@ -39,16 +37,15 @@ namespace MVCSample.Controllers
             else
             {
                 ViewData["HumanInfo"] = "All Humans";
-                //ViewData["Humans"] = Repository.GetAllHumans().ToList();
-                ViewBag.Humans = Repository.GetAllHumans().ToList();
+                human = Repository.GetAllHumans().ToList();
             }
-            return View();
+            return View(human);
         }
 
-        public IActionResult Authors([FromServices] INewsRepository news)
+        public IActionResult Authors([FromServices] INewsRepository news, int? humanId)
         {
-            var newsList = news.GetAllNew().ToList();
-            var humanList = Repository.GetAllHumans().ToList();
+            var newsList = humanId.HasValue ? news.GetAllNew().Where(x => x.AuthorId == humanId).ToList() : news.GetAllNew().ToList();
+            var humanList = humanId.HasValue ? Repository.GetAllHumans().Where(x => x.Id == humanId).ToList() : Repository.GetAllHumans().ToList();
 
             var temp = humanList
                 .GroupJoin(
@@ -56,6 +53,7 @@ namespace MVCSample.Controllers
                 x => x.Id,
                 y => y.AuthorId,
                 (x, y) => new HumanAuthorsViewModel {
+                    Id = x.Id,
                     FirstName = x.FirstName,
                     LastName = x.LastName,
                     NewsCounter = y.Count() 
@@ -67,39 +65,22 @@ namespace MVCSample.Controllers
 
         public IActionResult Country([FromQuery] string name)
         {
-            /*ViewData["Humans"] = db.Humans
-                .Include(x => x.Country)
-                .Where(x => x.Country.Name == name)
-                .ToList();*/
             ViewData["CountryName"] = name;
-            ViewData["Humans"] = Repository.GetAllHumans()
-                .Include(x => x.Country)
+            var humans = Repository.GetAllHumans()
                 .Where(x => x.Country.Name == name)
                 .ToList();
-            return View();
+            return View(humans);
         }
 
-        //[HttpPost]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        //public IActionResult Create(string FirstName, string LastName, int Age, bool IsSick, string Gender, int CountryId)
         public IActionResult Create(Human human)
         {
-            /*var human = new Human();
-
-            human.FirstName = FirstName;
-            human.LastName = LastName;
-            human.Age = Age;
-            human.IsSick = IsSick;
-            human.Gender = Gender;
-            human.CountryId = CountryId;*/
-
             Repository.CreateHuman(human);
-
             return View();
         }
 
