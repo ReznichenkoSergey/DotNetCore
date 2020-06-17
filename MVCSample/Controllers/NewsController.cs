@@ -44,7 +44,10 @@ namespace MVCSample.Controllers
         [HttpPost]
         public IActionResult Create(News news)
         {
-            Repository.CreateNews(news);
+            if (ModelState.IsValid)
+            {
+                Repository.CreateNews(news);
+            }
             return View();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using MVCSample.Models;
 using MVCSample.Models.Infestation;
@@ -20,19 +21,13 @@ namespace MVCSample.Controllers
             Repository = repository;
         }
 
-        public IActionResult Index(int humanId)
+        public IActionResult Index(int[] humanId)
         {
             List<Human> human = null;
-            if (humanId != 0)
+            if (humanId.Length > 0)
             {
-                var obj = Repository.GetHuman(humanId);
-                if (obj != null)
-                {
-                    ViewData["HumanInfo"] = $"Single Human by the humanid= {humanId}";
-                    human = obj != null ? new List<Human>() { obj } : new List<Human>();
-                }
-                else
-                    return new NotFoundObjectResult($"Human was not found!");
+                ViewData["HumanInfo"] = humanId.Length == 1 ? $"Single Human by the humanid= {humanId[0]}" : "Humans From Array";
+                human = Repository.GetAllHumans().Where(x => humanId.Contains(x.Id)).ToList();
             }
             else
             {
@@ -69,7 +64,13 @@ namespace MVCSample.Controllers
             var humans = Repository.GetAllHumans()
                 .Where(x => x.Country.Name == name)
                 .ToList();
-            return View(humans);
+            if (humans.Count > 0)
+            {
+                string m = string.Join("&", humans.Select(x => $"humanId={x.Id}"));
+                return Redirect($"~/Human/Index?{m}");
+            }
+            else
+                return RedirectToAction("Index");
         }
 
         public IActionResult Create()

@@ -1,17 +1,19 @@
 ﻿@model News
 
     <form method="post" asp-controller="News" asp-action="Create">
-        <label asp-for="Title">Title:</label>
-        <input asp-for="Title" type="text" /><br/>
+        <div class="text-danger" asp-validation-summary="All"></div>
+
+        <label asp-for="Title"></label>
+        <input asp-for="Title"/><br/>
 
         <label asp-for="Text">Text:</label>
-        <input asp-for="Text" type="text" /><br/>
+        <input asp-for="Text"/><br/>
 
         <label asp-for="IsFake">IsFake:</label>
-        <input asp-for="IsFake" type="checkbox" /><br/>
+        <input asp-for="IsFake"/><br/>
 
         <label asp-for="AuthorId">AuthorId</label>
-        <input asp-for="AuthorId" type="number" /><br/><br/>
+        <input asp-for="AuthorId"/><br/><br/>
         
         <button type="submit">Create News</button>
     </form>
