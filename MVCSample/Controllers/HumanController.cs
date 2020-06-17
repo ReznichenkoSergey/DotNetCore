@@ -80,7 +80,8 @@ namespace MVCSample.Controllers
         [HttpPost]
         public IActionResult Create(Human human)
         {
-            Repository.CreateHuman(human);
+            if(ModelState.IsValid)
+                Repository.CreateHuman(human);
             return View();
         }
 

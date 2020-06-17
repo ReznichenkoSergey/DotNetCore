@@ -1,24 +1,32 @@
 ﻿@model Human
 
-<form asp-controller="Human" asp-action="Create" method="post">
-    
-    <label asp-for="FirstName">FirstName:</label>
-    <input asp-for="FirstName" type="text" /><br/>
+    <form asp-controller="Human" asp-action="Create" method="post">
 
-    <label asp-for="LastName">LastName:</label>
-    <input asp-for="LastName" type="text" /><br/>
+        <div asp-validation-summary="All"/>
 
-    <label asp-for="Age">Age:</label>
-    <input asp-for="Age" type="number" /><br/>
+        <label asp-for="FirstName">FirstName:</label>
+        <input asp-for="FirstName" type="text" /><br />
+        <span asp-validation-for="FirstName" /><br />
 
-    <label asp-for="IsSick">IsSick:</label>
-    <input asp-for="IsSick" type="checkbox" /><br/>
+        <label asp-for="LastName">LastName:</label>
+        <input asp-for="LastName" type="text" /><br />
+        <span asp-validation-for="LastName" /><br />
 
-    <label asp-for="Gender">Gender:</label>
-    <input asp-for="Gender" type="text" /><br/>
+        <label asp-for="Age">Age:</label>
+        <input asp-for="Age" type="number" /><br />
+        <span asp-validation-for="Age" /><br />
 
-    <label asp-for="CountryId">CountryId:</label>
-    <input asp-for="CountryId" type="number" /><br/>
+        <label asp-for="IsSick">IsSick:</label>
+        <input asp-for="IsSick" type="checkbox" /><br />
+        <span asp-validation-for="IsSick" /><br />
 
-    <button type="submit">Create human</button>
-</form>
+        <label asp-for="Gender">Gender:</label>
+        <input asp-for="Gender" type="text" /><br />
+        <span asp-validation-for="Gender" /><br />
+
+        <label asp-for="CountryId">CountryId:</label>
+        <input asp-for="CountryId" type="number" /><br />
+        <span asp-validation-for="CountryId" /><br />
+
+        <button type="submit">Create human</button>
+    </form>

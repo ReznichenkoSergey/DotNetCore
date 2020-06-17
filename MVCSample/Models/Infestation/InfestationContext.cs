@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MVCSample.Models.Infestation
 {
-    public class InfestationContext : DbContext
+    public class InfestationContext : IdentityDbContext
     {
         public DbSet<Human> Humans { get; set; }
         public DbSet<Country> Countries { get; set; }
@@ -28,6 +29,7 @@ namespace MVCSample.Models.Infestation
                     new WorldPart{ Id = 5, Name = "Antarctica"},
                     new WorldPart{ Id = 6, Name = "Australia"}
                 });
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
