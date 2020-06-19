@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MVCSample.Infrastructure.Services.Interfaces;
 using MVCSample.Models.ViewModels;
 
 namespace MVCSample.Controllers
@@ -12,13 +14,16 @@ namespace MVCSample.Controllers
     {
         UserManager<IdentityUser> _userManager;
         SignInManager<IdentityUser> _signInManager;
+        IMessageService<Email> MessageService;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IMessageService<Email> message)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            MessageService = message;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Register()
         {
@@ -41,6 +46,7 @@ namespace MVCSample.Controllers
                 if (task.Result.Succeeded)
                 {
                     _signInManager.SignInAsync(user, false);
+                    MessageService.SendMessage();
                     return RedirectToAction("Index", "Human");
                 }
                 task.Result
@@ -51,6 +57,40 @@ namespace MVCSample.Controllers
                 //ViewData["errors"] = task.Result.Errors;
             }
             return View();
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public IActionResult Login(AccountLoginViewModel login, [FromQuery] string returnUri)
+        {
+            if (ModelState.IsValid)
+            {
+                var sighInTask = _signInManager.PasswordSignInAsync(login.Email, login.Password, false, false);
+                if (sighInTask.Result.Succeeded)
+                {
+                    if(!string.IsNullOrEmpty(returnUri))
+                    {
+                        return Redirect(returnUri);
+                    }
+                    return RedirectToAction("Index", "Human");
+                }
+                ModelState.AddModelError("", "Incorrect security pair!");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Human");
         }
     }
 }

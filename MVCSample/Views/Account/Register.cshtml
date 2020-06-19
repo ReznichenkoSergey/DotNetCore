@@ -2,6 +2,10 @@
 @model AccountRegisterViewModel
 
 @{ 
+    ViewData["Title"] = "Registration";
+}
+
+@{ 
     var error = ViewData["errors"] as IEnumerable<IdentityError>;
     if (error != null)
     {
@@ -12,16 +16,24 @@
         }
     }
 
+<h3>Registration</h3>
+
 <form asp-controller="Account" asp-action="Register" method="post">
     <div asp-validation-summary="All"></div>
-    <label asp-for="Email"></label><br>
-    <input asp-for="Email" /><br>
 
-    <label asp-for="Password"></label><br>
-    <input asp-for="Password" /><br>
-
-    <label asp-for="ConfirmPassword"></label><br>
-    <input asp-for="ConfirmPassword" /><br>
-
-    <button type="submit">Create human</button>
+    <div>
+        <label asp-for="Email"></label><br>
+        <input asp-for="Email" /><br>
+    </div>
+    <div>
+        <label asp-for="Password"></label><br>
+        <input asp-for="Password" /><br>
+    </div>
+    <div>
+        <label asp-for="ConfirmPassword"></label><br>
+        <input asp-for="ConfirmPassword" /><br>
+    </div>
+    <div>
+        <button type="submit">Create human</button>
+    </div>
 </form>

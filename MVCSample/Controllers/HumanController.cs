@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using MVCSample.Models;
@@ -12,6 +13,7 @@ using System.Linq;
 
 namespace MVCSample.Controllers
 {
+    //[Authorize]
     public class HumanController : Controller
     {
         readonly IHumanRepository Repository;
@@ -21,6 +23,7 @@ namespace MVCSample.Controllers
             Repository = repository;
         }
 
+        [AllowAnonymous]
         public IActionResult Index(int[] humanId)
         {
             List<Human> human = null;
@@ -37,6 +40,7 @@ namespace MVCSample.Controllers
             return View(human);
         }
 
+        [AllowAnonymous]
         public IActionResult Authors([FromServices] INewsRepository news, int? humanId)
         {
             var newsList = humanId.HasValue ? news.GetAllNew().Where(x => x.AuthorId == humanId).ToList() : news.GetAllNew().ToList();
@@ -58,6 +62,7 @@ namespace MVCSample.Controllers
             return View(temp);
         }
 
+        [AllowAnonymous]
         public IActionResult Country([FromQuery] string name)
         {
             ViewData["CountryName"] = name;
@@ -73,11 +78,14 @@ namespace MVCSample.Controllers
                 return RedirectToAction("Index");
         }
 
+        [Authorize]
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Create(Human human)
         {

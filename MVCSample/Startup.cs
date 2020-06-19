@@ -2,14 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MVCSample.Infrastructure.Services.Implementations;
+using MVCSample.Infrastructure.Services.Interfaces;
 using MVCSample.Models.Infestation;
 using MVCSample.Models.Interfaces;
 using MVCSample.Models.Repositories;
@@ -31,7 +35,8 @@ namespace MVCSample
             services.AddDbContext<InfestationContext>(builder => builder
                 .UseSqlServer(Configuration.GetConnectionString("InfestationDbConnection"))
                 .UseLazyLoadingProxies());
-
+            services.AddTransient<IMessageService<Sms>, SmsMessageService>();
+            services.AddTransient<IMessageService<Email>, EmailMessageService>();
             services.AddTransient<IHumanRepository, SqlHumanRepository>();
 
             services.AddTransient<INewsRepository, SqlNewsRepository>();
@@ -57,6 +62,12 @@ namespace MVCSample
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = false;
             });
+            /*services.AddControllersWithViews(configure =>
+            {
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+
+                configure.Filters.Add(new AuthorizeFilter(policy));
+            });*/
 
             services.AddControllersWithViews();
         }
@@ -76,9 +87,9 @@ namespace MVCSample
 
             app.UseRouting();
 
-            app.UseAuthorization();
-            
             app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
