@@ -35,8 +35,7 @@ namespace MVCSample
             services.AddDbContext<InfestationContext>(builder => builder
                 .UseSqlServer(Configuration.GetConnectionString("InfestationDbConnection"))
                 .UseLazyLoadingProxies());
-            services.AddTransient<IMessageService<Sms>, SmsMessageService>();
-            services.AddTransient<IMessageService<Email>, EmailMessageService>();
+            services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<IHumanRepository, SqlHumanRepository>();
 
             services.AddTransient<INewsRepository, SqlNewsRepository>();
