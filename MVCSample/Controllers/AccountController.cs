@@ -48,23 +48,7 @@ namespace MVCSample.Controllers
                 if (task.Result.Succeeded)
                 {
                     _signInManager.SignInAsync(user, false);
-                    switch(messageType)
-                    {
-                        case MessageType.Email:
-                            MessageService.SendMessage(new Email(toAddress: account.Email, toPerson: account.Email.Substring(0, account.Email.IndexOfAny(new char[] { '@' })))
-                            {
-                                TextContent = "You've successfully registered!",
-                                Subject = "Registration",
-                                ContentHtml = "<h2>You've successfully registered!<h2>"
-                            });
-                            break;
-                        case MessageType.Sms:
-                            MessageService.SendMessage(new Sms(toPhone: account.Email) //Must be a Phone Number
-                            {
-                                TextContent = "You've successfully registered!"
-                            });
-                            break;
-                    }
+                    MessageService.SendMessage(account.Email, messageType);
                     return RedirectToAction("Index", "Human");
                 }
                 task.Result

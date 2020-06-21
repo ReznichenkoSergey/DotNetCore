@@ -21,27 +21,32 @@ namespace MVCSample.Infrastructure.Services.Implementations
             Configuration = configuration;
         }
 
-        public void SendMessage(IMyMessage message)
+        public void SendMessage(string toAddress, MessageType messageType)
         {
-            if (message is Sms)
-                SendSms(message as Sms);
-            else if (message is Email)
-                SendEmail(message as Email);
+            switch(messageType)
+            {
+                case MessageType.Sms:
+                    SendSms(toAddress);
+                    break;
+                case MessageType.Email:
+                    SendEmail(toAddress);
+                    break;
+            }
         }
 
-        private void SendEmail(Email myMessage)
+        private void SendEmail(string toAddress)
         {
             MimeMessage message = new MimeMessage();
             var from = new MailboxAddress(Configuration["EmailFromPerson"], Configuration["EmailAddress"]);
             message.From.Add(from);
             //
-            var to = new MailboxAddress(myMessage.ToPerson, myMessage.ToAddress);
+            var to = new MailboxAddress(toAddress.Substring(0, toAddress.IndexOfAny(new char[] { '@' })), toAddress);
             message.To.Add(to);
-            message.Subject = myMessage.Subject;
+            message.Subject = Configuration["RegistrationInfo:Title"];
             //
             BodyBuilder bodyBuilder = new BodyBuilder();
-            bodyBuilder.TextBody = myMessage.TextContent;
-            bodyBuilder.HtmlBody = myMessage.ContentHtml;
+            bodyBuilder.TextBody = Configuration["RegistrationInfo:TextSimple"];
+            bodyBuilder.HtmlBody = Configuration["RegistrationInfo:TextHtml"];
             message.Body = bodyBuilder.ToMessageBody();
 
             using(SmtpClient client = new SmtpClient())
@@ -55,14 +60,14 @@ namespace MVCSample.Infrastructure.Services.Implementations
             }
         }
 
-        private void SendSms(Sms myMessage)
+        private void SendSms(string toPhone)
         {
             TwilioClient.Init(Configuration["TwilioAccountSid"], Configuration["TwilioAuthToken"]);
 
             MessageResource.Create(
-                body: myMessage.TextContent,
+                body: Configuration["RegistrationInfo:TextSimple"],
                 from: new Twilio.Types.PhoneNumber(Configuration["TwilioPhoneSender"]),
-                to: new Twilio.Types.PhoneNumber(myMessage.ToAddress)
+                to: new Twilio.Types.PhoneNumber(toPhone)
             );
         }
     }
