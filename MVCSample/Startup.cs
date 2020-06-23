@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MVCSample.Infrastructure.Configuration;
+using MVCSample.Infrastructure.Middlewares;
 using MVCSample.Infrastructure.Services.Implementations;
 using MVCSample.Infrastructure.Services.Interfaces;
 using MVCSample.Models.Infestation;
@@ -61,6 +63,19 @@ namespace MVCSample
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = false;
             });
+
+            var section = Configuration.GetSection("Infestation");
+            services.Configure<InfestationConfiguration>(section);
+
+            var sectionRegistrationInfo = Configuration.GetSection("RegistrationInfo");
+            services.Configure<RegistrationInfo>(sectionRegistrationInfo);
+
+            var sectionEMailSenderInfo = Configuration.GetSection("EMailSenderInfo");
+            services.Configure<EMailSenderInfo>(sectionEMailSenderInfo);
+
+            var sectionTwilio = Configuration.GetSection("Twilio");
+            services.Configure<MVCSample.Infrastructure.Configuration.Twilio>(sectionTwilio);
+
             /*services.AddControllersWithViews(configure =>
             {
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
@@ -82,9 +97,42 @@ namespace MVCSample
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            //app.UseMiddleware<WriteConsoleMiddleware>("Middleware 1");
+            app.UseWriteToConsole("Middleware 1");
+
+            /*app.Use(async (context, next) =>
+            {
+                Console.WriteLine("Middleware 1 before");
+                await next.Invoke();
+                Console.WriteLine("Middleware 1 after");
+            });*/
+
             app.UseStaticFiles();
 
+            //app.UseMiddleware<WriteConsoleMiddleware>("Middleware 2");
+            app.UseWriteToConsole("Middleware 2");
+
+            /*app.Use(async (context, next) =>
+            {
+                Console.WriteLine("Middleware 2 before");
+                await next.Invoke();
+                Console.WriteLine("Middleware 2 after");
+            });*/
+
+
             app.UseRouting();
+
+            /*app.Use(async (context, next) =>
+            {
+                await context.Response.WriteAsync("Use MiddleWare!");
+                await next.Invoke();
+            });
+
+            app.Run(async context =>
+            {
+                await context.Response.WriteAsync("Use Run!");
+            });*/
 
             app.UseAuthentication();
 

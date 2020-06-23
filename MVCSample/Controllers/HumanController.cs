@@ -43,6 +43,10 @@ namespace MVCSample.Controllers
         [AllowAnonymous]
         public IActionResult Authors([FromServices] INewsRepository news, int? humanId)
         {
+            HttpContext.Response.StatusCode = 418;
+
+            var host = HttpContext.Request.Host.Value;
+
             var newsList = humanId.HasValue ? news.GetAllNew().Where(x => x.AuthorId == humanId).ToList() : news.GetAllNew().ToList();
             var humanList = humanId.HasValue ? Repository.GetAllHumans().Where(x => x.Id == humanId).ToList() : Repository.GetAllHumans().ToList();
 
@@ -51,11 +55,12 @@ namespace MVCSample.Controllers
                 newsList,
                 x => x.Id,
                 y => y.AuthorId,
-                (x, y) => new HumanAuthorsViewModel {
+                (x, y) => new HumanAuthorsViewModel
+                {
                     Id = x.Id,
                     FirstName = x.FirstName,
                     LastName = x.LastName,
-                    NewsCounter = y.Count() 
+                    NewsCounter = y.Count()
                 })
                 .ToList();
 
