@@ -8,6 +8,6 @@ namespace MVCSample.Infrastructure.Middlewares
 {
     public static class MiddlewareExtentions
     {
-        public static IApplicationBuilder UseWriteToConsole(this IApplicationBuilder app, string output) => app.UseMiddleware<WriteConsoleMiddleware>(output);
+        public static IApplicationBuilder UseWriteToConsole(this IApplicationBuilder app, string output) => app.UseMiddleware<SendMailReportMiddleware>(output);
     }
 }

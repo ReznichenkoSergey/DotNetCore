@@ -64,17 +64,13 @@ namespace MVCSample
                 options.User.RequireUniqueEmail = false;
             });
 
-            var section = Configuration.GetSection("Infestation");
-            services.Configure<InfestationConfiguration>(section);
+            /*var sectionEmailConfig = Configuration.GetSection("EmailConfig");
+            services.Configure<EmailConfig>(sectionEmailConfig);
 
-            var sectionRegistrationInfo = Configuration.GetSection("RegistrationInfo");
-            services.Configure<RegistrationInfo>(sectionRegistrationInfo);
-
-            var sectionEMailSenderInfo = Configuration.GetSection("EMailSenderInfo");
-            services.Configure<EMailSenderInfo>(sectionEMailSenderInfo);
-
-            var sectionTwilio = Configuration.GetSection("Twilio");
-            services.Configure<MVCSample.Infrastructure.Configuration.Twilio>(sectionTwilio);
+            var sectionSmsConfig = Configuration.GetSection("SmsConfig");
+            services.Configure<SmsConfig>(sectionSmsConfig);*/
+            var sectionInfestation = Configuration.GetSection("Infestation");
+            services.Configure<InfestationConfiguration>(sectionInfestation);
 
             /*services.AddControllersWithViews(configure =>
             {
@@ -99,8 +95,6 @@ namespace MVCSample
             }
 
             //app.UseMiddleware<WriteConsoleMiddleware>("Middleware 1");
-            app.UseWriteToConsole("Middleware 1");
-
             /*app.Use(async (context, next) =>
             {
                 Console.WriteLine("Middleware 1 before");
@@ -111,7 +105,7 @@ namespace MVCSample
             app.UseStaticFiles();
 
             //app.UseMiddleware<WriteConsoleMiddleware>("Middleware 2");
-            app.UseWriteToConsole("Middleware 2");
+            //app.UseWriteToConsole("Middleware 2");
 
             /*app.Use(async (context, next) =>
             {
@@ -120,6 +114,7 @@ namespace MVCSample
                 Console.WriteLine("Middleware 2 after");
             });*/
 
+            app.UseWriteToConsole("None");
 
             app.UseRouting();
 

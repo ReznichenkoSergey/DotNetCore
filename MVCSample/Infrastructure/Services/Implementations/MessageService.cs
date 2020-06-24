@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using MVCSample.Infrastructure.Configuration;
 using MVCSample.Infrastructure.Services.Interfaces;
+using Org.BouncyCastle.X509;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,22 +17,11 @@ namespace MVCSample.Infrastructure.Services.Implementations
 {
     public class MessageService : IMessageService
     {
-        private readonly IConfiguration Configuration;
-        private readonly IOptions<InfestationConfiguration> options;
-        private readonly IOptions<EMailSenderInfo> optionsEmailConfig;
-        private readonly IOptions<RegistrationInfo> optionsRegistrationInfo;
-        private readonly IOptions<Configuration.Twilio> optionsTwillio;
+        private readonly IOptions<InfestationConfiguration> _config;
 
-        public MessageService(IConfiguration configuration, IOptions<InfestationConfiguration> options, 
-            IOptions<EMailSenderInfo> optionsEmailConfig,
-            IOptions<RegistrationInfo> optionsRegistrationInfo,
-            IOptions<Configuration.Twilio> optionsTwillio)
+        public MessageService(IOptions<InfestationConfiguration> config)
         {
-            Configuration = configuration;
-            this.options = options;
-            this.optionsEmailConfig = optionsEmailConfig;
-            this.optionsRegistrationInfo = optionsRegistrationInfo;
-            this.optionsTwillio = optionsTwillio;
+            _config = config;
         }
 
         public void SendMessage(string toAddress, MessageType messageType)
@@ -42,33 +32,54 @@ namespace MVCSample.Infrastructure.Services.Implementations
                     SendSms(toAddress);
                     break;
                 case MessageType.Email:
-                    SendEmail(toAddress);
+                    SendEmail(string.Empty, toAddress);
                     break;
             }
         }
 
-        private void SendEmail(string toAddress)
+        public void SendMessage(string text, string toAddress, MessageType messageType)
+        {
+            switch (messageType)
+            {
+                case MessageType.Sms:
+                    SendSms(toAddress);
+                    break;
+                case MessageType.Email:
+                    SendEmail(text, toAddress);
+                    break;
+            }
+        }
+
+        private void SendEmail(string content, string toAddress)
         {
             MimeMessage message = new MimeMessage();
-            var from = new MailboxAddress(optionsEmailConfig.Value.Person, optionsEmailConfig.Value.Address);
+            var from = new MailboxAddress(_config.Value.EmailConfig.SenderName, _config.Value.EmailConfig.SenderEmail);
             message.From.Add(from);
             //
             var to = new MailboxAddress(toAddress.Substring(0, toAddress.IndexOfAny(new char[] { '@' })), toAddress);
             message.To.Add(to);
-            message.Subject = optionsRegistrationInfo.Value.Title;// Configuration["RegistrationInfo:Title"];
+            message.Subject = _config.Value.EmailConfig.Subject;// Configuration["RegistrationInfo:Title"];
             //
             BodyBuilder bodyBuilder = new BodyBuilder();
-            bodyBuilder.TextBody = optionsRegistrationInfo.Value.TextSimple;// Configuration["RegistrationInfo:TextSimple"];
-            bodyBuilder.HtmlBody = optionsRegistrationInfo.Value.TextHtml;// Configuration["RegistrationInfo:TextHtml"];
+            if (string.IsNullOrEmpty(content))
+            {
+                bodyBuilder.TextBody = _config.Value.EmailConfig.TextContent;// Configuration["RegistrationInfo:TextSimple"];
+                bodyBuilder.HtmlBody = _config.Value.EmailConfig.HtmlContent;// Configuration["RegistrationInfo:TextHtml"];
+            }
+            else
+            {
+                bodyBuilder.TextBody = content;
+                bodyBuilder.HtmlBody = $"<h1>{content}</h1>";
+            }
             message.Body = bodyBuilder.ToMessageBody();
 
             using(SmtpClient client = new SmtpClient())
             {
                 client.ServerCertificateValidationCallback = (s, c, ce, e) => true;
                 //client.Connect(Configuration["SmtpServerName"], Configuration.GetValue<int>("SmtpServerPort"), true);
-                client.Connect(options.Value.GoogleSmtpServer, options.Value.Port, true);
+                client.Connect(_config.Value.EmailConfig.SmtpServer, _config.Value.EmailConfig.Port, true);
                 //options.Value.GoogleSmtpServer
-                client.Authenticate(optionsEmailConfig.Value.Address, optionsEmailConfig.Value.Password);
+                client.Authenticate(_config.Value.EmailConfig.SenderEmail, _config.Value.EmailConfig.Password);
 
                 client.Send(message);
                 client.Disconnect(true);
@@ -77,11 +88,10 @@ namespace MVCSample.Infrastructure.Services.Implementations
 
         private void SendSms(string toPhone)
         {
-            TwilioClient.Init(optionsTwillio.Value.TwilioAccountSid, optionsTwillio.Value.TwilioAuthToken);
-
+            TwilioClient.Init(_config.Value.SmsConfig.AccountSid, _config.Value.SmsConfig.AuthToken);
             MessageResource.Create(
-                body: optionsRegistrationInfo.Value.Title, //Configuration["RegistrationInfo:TextSimple"],
-                from: new Twilio.Types.PhoneNumber(optionsTwillio.Value.TwilioPhoneSender),
+                body: _config.Value.SmsConfig.Content, //Configuration["RegistrationInfo:TextSimple"],
+                from: new Twilio.Types.PhoneNumber(_config.Value.SmsConfig.PhoneSender),
                 to: new Twilio.Types.PhoneNumber(toPhone)
             );
         }

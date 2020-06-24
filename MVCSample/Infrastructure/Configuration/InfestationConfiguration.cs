@@ -1,13 +1,20 @@
-﻿using System;
+﻿using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace MVCSample.Infrastructure.Configuration
 {
-    public class InfestationConfiguration
+    public class InfestationConfiguration: IInfestationConfig
     {
-        public string GoogleSmtpServer { get; set; }
-        public int Port { get; set; }
+        public EmailConfig EmailConfig { get; set; }
+        public SmsConfig SmsConfig { get; set; }
+    }
+
+    public interface IInfestationConfig
+    {
+        EmailConfig EmailConfig { get; }
+        SmsConfig SmsConfig { get; }
     }
 }

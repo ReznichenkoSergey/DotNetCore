@@ -9,5 +9,7 @@ namespace MVCSample.Infrastructure.Services.Interfaces
     public interface IMessageService
     {
         void SendMessage(string toAddress, MessageType messageType);
+
+        void SendMessage(string text, string toAddress, MessageType messageType);
     }
 }
