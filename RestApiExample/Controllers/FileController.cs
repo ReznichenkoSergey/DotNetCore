@@ -4,12 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 
 namespace RestApiExample.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class FileController : ControllerBase
     {
+        [HttpGet("File")]
+        public FileContentResult GetFile()
+        {
+            var fileBytes = System.IO.File.ReadAllBytes("wwwroot/About.png");
+            return new FileContentResult(fileBytes, "image/png");
+        }
     }
 }
