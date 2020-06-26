@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MVCSample.Infrastructure.BackgroundServices;
 using MVCSample.Infrastructure.Configuration;
 using MVCSample.Infrastructure.Middlewares;
 using MVCSample.Infrastructure.Services.Implementations;
@@ -64,6 +65,8 @@ namespace MVCSample
                 options.User.RequireUniqueEmail = false;
             });
 
+            services.AddSingleton<FileProcessingChannel>();
+
             /*var sectionEmailConfig = Configuration.GetSection("EmailConfig");
             services.Configure<EmailConfig>(sectionEmailConfig);
 
@@ -71,6 +74,18 @@ namespace MVCSample
             services.Configure<SmsConfig>(sectionSmsConfig);*/
             var sectionInfestation = Configuration.GetSection("Infestation");
             services.Configure<InfestationConfiguration>(sectionInfestation);
+
+            services.AddMemoryCache();
+
+            services.AddHostedService<LoadFileService>();
+            services.AddHostedService<UploadFileService>();
+
+            services.AddSingleton<IExampleRestClient, ExampleRestClient>();
+
+            services.Configure<IISServerOptions>(options =>
+            {
+                options.MaxRequestBodySize = int.MaxValue;
+            });
 
             /*services.AddControllersWithViews(configure =>
             {
