@@ -1,7 +1,4 @@
-﻿using Microsoft.CodeAnalysis.Options;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using MVCSample.Infrastructure.Configuration;
 using MVCSample.Infrastructure.Services.Interfaces;
@@ -9,24 +6,23 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MVCSample.Infrastructure.BackgroundServices
+namespace MVCSample.Infrastructure.Services.Implementations
 {
-    public class LoadFileService : BackgroundService
+    public class ScopeLoadService : IScopeService<FileLoad>
     {
-        /*private IMemoryCache _cash;
+        private IMemoryCache _cash;
         private IExampleRestClient _restClient;
         private IOptions<MemmoryCashConfig> _option;
         private IFileKeyCreator _creator;
-        
-        public LoadFileService(IMemoryCache cash, IExampleRestClient restClient, IOptions<MemmoryCashConfig> option, IFileKeyCreator creator)
+
+        public ScopeLoadService(IMemoryCache cash, IExampleRestClient restClient, IOptions<MemmoryCashConfig> option, IFileKeyCreator creator)
         {
             _cash = cash;
             _restClient = restClient;
             _option = option;
             _creator = creator;
         }
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        public async Task DoWorkAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -51,29 +47,6 @@ namespace MVCSample.Infrastructure.BackgroundServices
                 }
                 await Task.Delay(TimeSpan.FromMinutes(_option.Value.ScanningPeriodInMinutes));
             }
-        }*/
-
-        public IServiceProvider _services { get; }
-
-        public LoadFileService(IServiceProvider services)
-        {
-            _services = services;
-        }
-
-        private async Task DoWork(CancellationToken stoppingToken)
-        {
-            using(var scope = _services.CreateScope())
-            {
-                await scope
-                    .ServiceProvider
-                    .GetRequiredService<IScopeService<FileLoad>>()
-                    .DoWorkAsync(stoppingToken);
-            }
-        }
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            await DoWork(stoppingToken);
         }
 
     }

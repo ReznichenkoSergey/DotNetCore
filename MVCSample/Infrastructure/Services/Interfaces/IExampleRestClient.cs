@@ -8,7 +8,9 @@ namespace MVCSample.Infrastructure.Services.Interfaces
 {
     public interface IExampleRestClient
     {
-        byte[] GetFile();
+        byte[] GetFile(string fileName);
+
+        List<string> GetDefaultFiles();
 
         void UploadFile(IFormFile file);
     }

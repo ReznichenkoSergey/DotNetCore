@@ -1,0 +1,22 @@
+﻿@model List<string>
+
+<h3>Select File To Load</h3>
+<br>
+
+<div>
+    <a asp-controller="Terrain" asp-action="Upload">Upload image</a>
+</div><br />
+
+<table class="table-striped" width="400">
+    <tr>
+        <td><b>List of images</b></td>
+    </tr>
+    @foreach (string fileName in Model)
+    {
+        <tr>
+            <td>
+                <a asp-controller="Terrain" asp-action="Image" asp-route-fileName="@fileName">@fileName</a>
+            </td>
+        </tr>
+    }
+</table>

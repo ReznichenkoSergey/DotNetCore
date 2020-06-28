@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Channels;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using MVCSample.Infrastructure.Services.Interfaces;
 using RestSharp;
-using System.Threading.Channels;
 using MVCSample.Models.ViewModels;
 using MVCSample.Infrastructure.Services.Implementations;
+using Microsoft.Extensions.Options;
+using MVCSample.Infrastructure.Configuration;
 
 namespace MVCSample.Controllers
 {
@@ -19,13 +17,14 @@ namespace MVCSample.Controllers
         private IMemoryCache _cash { get; set; }
 
         private IExampleRestClient _restClient { get; set; }
-
+        public IFileKeyCreator _creator { get; }
         private FileProcessingChannel _channel { get; }
 
-        public TerrainController(IMemoryCache cash, IExampleRestClient restClient, FileProcessingChannel channel)
+        public TerrainController(IMemoryCache cash, IExampleRestClient restClient, IFileKeyCreator creator, FileProcessingChannel channel)
         {
             _cash = cash;
             _restClient = restClient;
+            _creator = creator;
             _channel = channel;
         }
 
@@ -35,18 +34,23 @@ namespace MVCSample.Controllers
         }
 
         [AllowAnonymous]
-        public FileContentResult Image()
+        public IActionResult LoadDefaultFiles()
         {
-            var cashKey = $"image_{DateTime.UtcNow:yyy_MM_dd}";
+            var fileList = _restClient.GetDefaultFiles();
+            return View(fileList);
+        }
+
+        [AllowAnonymous]
+        public FileContentResult Image([FromServices] IOptions<MemmoryCashConfig> config, string fileName)
+        {
+            //var cashKey = $"image_{DateTime.UtcNow:yyy_MM_dd}";
+            var cashKey = _creator.GetKey(fileName);
             var image = _cash.Get<byte[]>(cashKey);
             if (image == null)
             {
                 var entryOptions = new MemoryCacheEntryOptions()
-                {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2)
-                };
-
-                image = _restClient.GetFile();
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(config.Value.ExpirationTimeValueInMinutes));
+                image = _restClient.GetFile(fileName);
                 //_cash.Set<byte[]>(cashKey, image);
                 _cash.Set(cashKey, image, entryOptions);
             }
@@ -55,11 +59,13 @@ namespace MVCSample.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Upload([FromForm] TerrainUploadViewModel uploadfile)
+        //public async Task<IActionResult> Upload([FromForm] TerrainUploadViewModel uploadfile)
+        public IActionResult Upload([FromForm] TerrainUploadViewModel uploadfile)
         {
             if (uploadfile.File?.Length > 0)
             {
-                await _channel.SetAsync(uploadfile.File);
+                //_channel.SetAsync(uploadfile.File);
+                _channel.Set(uploadfile.File);
 
                 uploadfile.Stage = UploadStage.Completed;
                 uploadfile.File = null;

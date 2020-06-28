@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +33,6 @@ namespace MVCSample
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<InfestationContext>(builder => builder
@@ -40,8 +40,9 @@ namespace MVCSample
                 .UseLazyLoadingProxies());
             services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<IHumanRepository, SqlHumanRepository>();
-
+            services.AddSingleton<IFileKeyCreator, FileKeyCreator>();
             services.AddTransient<INewsRepository, SqlNewsRepository>();
+
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<InfestationContext>();
 
@@ -67,20 +68,23 @@ namespace MVCSample
 
             services.AddSingleton<FileProcessingChannel>();
 
-            /*var sectionEmailConfig = Configuration.GetSection("EmailConfig");
-            services.Configure<EmailConfig>(sectionEmailConfig);
-
-            var sectionSmsConfig = Configuration.GetSection("SmsConfig");
-            services.Configure<SmsConfig>(sectionSmsConfig);*/
             var sectionInfestation = Configuration.GetSection("Infestation");
             services.Configure<InfestationConfiguration>(sectionInfestation);
 
+            var sectionWebApiConfig = Configuration.GetSection("WebApiServerConfig");
+            services.Configure<WebApiServerConfig>(sectionWebApiConfig);
+
+            var sectionMemmoryCashConfig = Configuration.GetSection("MemmoryCashConfig");
+            services.Configure<MemmoryCashConfig>(sectionMemmoryCashConfig);
+
             services.AddMemoryCache();
+
+            services.AddScoped<IExampleRestClient, ExampleRestClient>();
+            services.AddScoped<IScopeService<FileLoad>, ScopeLoadService>();
+            services.AddScoped<IScopeService<FileUpload>, ScopeUploadService>();
 
             services.AddHostedService<LoadFileService>();
             services.AddHostedService<UploadFileService>();
-
-            services.AddSingleton<IExampleRestClient, ExampleRestClient>();
 
             services.Configure<IISServerOptions>(options =>
             {
@@ -97,7 +101,6 @@ namespace MVCSample
             services.AddControllersWithViews();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
