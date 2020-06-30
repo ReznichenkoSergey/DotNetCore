@@ -6,11 +6,12 @@ namespace MVCSample.Infrastructure.Services.Implementations
 {
     public class ScopeUploadService : IScopeService<FileUpload>
     {
-        private FileProcessingChannel _channel { get; set; }
+        private IFileProcessing _channel { get; set; }
 
         private IExampleRestClient _restClient { get; set; }
 
-        public ScopeUploadService(FileProcessingChannel channel, IExampleRestClient restClient)
+        //public ScopeUploadService(FileProcessingChannel channel, IExampleRestClient restClient)
+        public ScopeUploadService(IFileProcessing channel, IExampleRestClient restClient)
         {
             _channel = channel;
             _restClient = restClient;

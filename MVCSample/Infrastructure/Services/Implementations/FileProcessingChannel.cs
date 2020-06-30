@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
+using MVCSample.Infrastructure.Services.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Channels;
-using System.Threading.Tasks;
 
 namespace MVCSample.Infrastructure.Services.Implementations
 {
-    public class FileProcessingChannel
+    public class FileProcessingChannel: IFileProcessing
     {
         private Channel<IFormFile> _channel;
 

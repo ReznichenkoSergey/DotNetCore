@@ -66,7 +66,8 @@ namespace MVCSample
                 options.User.RequireUniqueEmail = false;
             });
 
-            services.AddSingleton<FileProcessingChannel>();
+            //services.AddSingleton<FileProcessingChannel>();
+            services.AddSingleton<IFileProcessing, FileProcessingChannel>();
 
             var sectionInfestation = Configuration.GetSection("Infestation");
             services.Configure<InfestationConfiguration>(sectionInfestation);

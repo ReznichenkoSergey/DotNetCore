@@ -18,9 +18,10 @@ namespace MVCSample.Controllers
 
         private IExampleRestClient _restClient { get; set; }
         public IFileKeyCreator _creator { get; }
-        private FileProcessingChannel _channel { get; }
+        private IFileProcessing _channel { get; }
 
-        public TerrainController(IMemoryCache cash, IExampleRestClient restClient, IFileKeyCreator creator, FileProcessingChannel channel)
+        //public TerrainController(IMemoryCache cash, IExampleRestClient restClient, IFileKeyCreator creator, FileProcessingChannel channel)
+        public TerrainController(IMemoryCache cash, IExampleRestClient restClient, IFileKeyCreator creator, IFileProcessing channel)
         {
             _cash = cash;
             _restClient = restClient;
