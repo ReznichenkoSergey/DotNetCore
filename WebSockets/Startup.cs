@@ -38,8 +38,11 @@ namespace WebSockets
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
-            app.UseWebSockets();
+            WebSocketOptions socketOptions = new WebSocketOptions()
+            {
+                KeepAliveInterval = TimeSpan.FromDays(2)
+            };
+            app.UseWebSockets(socketOptions);
 
             app.UseStaticFiles();
 
