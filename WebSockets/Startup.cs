@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WebSocketsEx.Services;
+using WebSockets.Models.Classes;
 
-namespace WebSocketsEx
+namespace WebSockets
 {
     public class Startup
     {
@@ -38,6 +38,7 @@ namespace WebSocketsEx
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
             app.UseWebSockets();
 
             app.UseStaticFiles();

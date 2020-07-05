@@ -6,13 +6,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WebSocketsEx.Services;
+using WebSockets.Models.Classes;
 
-namespace WebSocketsEx.Controllers
+namespace WebSockets.Controllers
 {
     public class StreamController : Controller
     {
-        static int num = 0;
         public WebSocketsHandler _handler;
 
         public StreamController(WebSocketsHandler handler)
@@ -23,13 +22,12 @@ namespace WebSocketsEx.Controllers
         public async Task Get()
         {
             var context = ControllerContext.HttpContext;
-            var isWebSocketRequest = context.WebSockets.IsWebSocketRequest;
-
-            if(isWebSocketRequest)
+            if (context.WebSockets.IsWebSocketRequest)
             {
                 WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
+                //await _handler.HandleAsync(Guid.NewGuid(), webSocket);
+                await _handler.HandleAsync(webSocket);
                 //await SendMessage(webSocket);
-                await _handler.HandleAsync(Guid.NewGuid(), webSocket);
             }
             else
             {
@@ -37,15 +35,14 @@ namespace WebSocketsEx.Controllers
             }
         }
 
-        private async Task SendMessage(WebSocket webSocket)
+        private async Task SendMessage(WebSocket socket)
         {
-            while(true)
+            while (true)
             {
-                var bytes = Encoding.ASCII.GetBytes($"{num++}.Message");
-                await webSocket.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
-                Thread.Sleep(1000);
+                byte[] arr = Encoding.ASCII.GetBytes("Hello!");
+                await socket.SendAsync(new ArraySegment<byte>(arr), WebSocketMessageType.Text, true, CancellationToken.None);
+                await Task.Delay(2000);
             }
         }
-
     }
 }

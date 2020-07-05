@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FortuneConsole", "FortuneCo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestApiExample", "RestApiExample\RestApiExample.csproj", "{D231A750-414C-411D-A740-5512521D3876}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSocketsEx", "WebSocketsEx\WebSocketsEx.csproj", "{2D6784D4-0286-4B84-919A-1B5B4491CFE3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSockets", "WebSockets\WebSockets.csproj", "{1B54896B-4282-47B6-9A00-7D1FB767C034}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{D231A750-414C-411D-A740-5512521D3876}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D231A750-414C-411D-A740-5512521D3876}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D231A750-414C-411D-A740-5512521D3876}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2D6784D4-0286-4B84-919A-1B5B4491CFE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2D6784D4-0286-4B84-919A-1B5B4491CFE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2D6784D4-0286-4B84-919A-1B5B4491CFE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2D6784D4-0286-4B84-919A-1B5B4491CFE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B54896B-4282-47B6-9A00-7D1FB767C034}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B54896B-4282-47B6-9A00-7D1FB767C034}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B54896B-4282-47B6-9A00-7D1FB767C034}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B54896B-4282-47B6-9A00-7D1FB767C034}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

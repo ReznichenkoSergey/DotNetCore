@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using WebSocketsEx.Models;
+using WebSockets.Models;
 
-namespace WebSocketsEx.Controllers
+namespace WebSockets.Controllers
 {
     public class HomeController : Controller
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace WebSocketsEx.Models
+namespace WebSockets.Models
 {
     public class ErrorViewModel
     {
